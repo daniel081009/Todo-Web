@@ -6,6 +6,7 @@ import (
 	"Todo_back_end/jwt"
 	"Todo_back_end/route/block/get"
 	"database/sql"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -75,6 +76,7 @@ func Edit(ctx *gin.Context) {
 
 	token,_:= ctx.Cookie("Token")
 	token_data :=jwt.Get().ValidateToken(token)	
+	fmt.Println(token_data.User_id)
 	if 0 != all.Block.Edit(token_data.User_id,req.Id,req.Tpye,req.Data) {
 		ctx.JSON(200,gin.H{
 			"code":200,
@@ -86,9 +88,19 @@ func Edit(ctx *gin.Context) {
 	}
 }
 func Delete(ctx *gin.Context) {
+	type reqd struct {
+		Id string `json:"id" binding:"required"`
+	}
+	req := &reqd{}
+	if ctx.ShouldBind(req) != nil {
+		ctx.JSON(http.StatusUnprocessableEntity, gin.H{
+			"code" : -1,
+		})
+		return
+	}
 	token,_:= ctx.Cookie("Token")
 	token_data :=jwt.Get().ValidateToken(token)		
-	if all.Block.Delete(token_data.User_id) != 0 {
+	if all.Block.Delete(token_data.User_id,req.Id) != 0 {
 		ctx.JSON(200,gin.H{
 			"code":200,
 		})	

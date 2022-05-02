@@ -31,6 +31,17 @@ func (User)Login(email string,password string) *structs.User {
     defer db.Close()
     return &user
 }
+func (User)Check(id string) *structs.User {
+	db := db.DB()
+    user := structs.User{}
+    err := db.QueryRow("select id,name,email from User where id = ?",id).Scan(&user.Id,&user.Name,&user.Email)
+    user.Password = "secret"
+    if err != nil {
+        return nil
+    }
+    defer db.Close()
+    return &user
+}
 func (User)Edit(typed int,data string,id string) int {
 	db := db.DB()
     query := ""

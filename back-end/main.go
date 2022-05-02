@@ -6,6 +6,7 @@ import (
 	user_route "Todo_back_end/route/user"
 
 	"github.com/gin-gonic/gin"
+	cors "github.com/itsjamie/gin-cors"
 )
 
 type Bind struct {
@@ -14,6 +15,14 @@ type Bind struct {
 
 func main() {
     r := gin.Default()
+    r.Use(cors.Middleware(cors.Config{
+    	Origins:        "http://localhost:3000",
+    	Methods:        "GET, PUT, POST, DELETE",
+    	RequestHeaders: "Origin, Authorization, Content-Type",
+    	ExposedHeaders: "",
+    	Credentials: true,
+    	ValidateHeaders: true,
+    }))
 	user := r.Group("/user")
 	{
 		user.POST("login",user_route.Login)
@@ -21,6 +30,7 @@ func main() {
 		user.Use(jwt.Check)
 		user.PUT("edit",user_route.Edit)
 		user.DELETE("delete",user_route.Delete)
+		user.POST("check",user_route.Check)
 	}
 	r.Use(jwt.Check)
 	block := r.Group("/block")
@@ -28,7 +38,7 @@ func main() {
 		block.GET("get",block_route.Get)
 		block.POST("create",block_route.Create)
 		block.PUT("edit",block_route.Edit)
-		block.DELETE("delete")
+		block.DELETE("delete",block_route.Delete)
 	}
 	r.Use(func(ctx *gin.Context) {
 		ctx.JSON(404,gin.H{

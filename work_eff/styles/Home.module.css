@@ -1,0 +1,34 @@
+.main {
+  height: 100vh;
+  scroll-snap-type: y mandatory;
+}
+.top_menu {
+  grid-area: top_menu;
+  border: black 1vh solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  scroll-snap-align: start;
+}
+
+.title_top {
+  font-size: 6vh;
+}
+
+.down_menu {
+  height: 100vh;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  scroll-snap-type: x mandatory;
+  scroll-snap-align: end;
+}
+
+.item {
+  height: 100%;
+  width: 100%;
+  display: inline-block;
+  grid-area: right_bar;
+  scroll-snap-align: start;
+}

@@ -35,14 +35,15 @@ func (Block) Create(block structs.Block) (int,*structs.Block){
 func (Block) Edit(user_id string, block_id string,typed int,data string) int {
 	db := db.DB()
 	query := ""
+	fmt.Println(user_id,block_id,typed,data)
     if typed == 1 { // type
-        query = "UPDATE User set type = ? where user_id =? and id = ?"
+        query = "UPDATE block set type = ? where user_id = ? and id = ?"
     }else if typed == 2 { // data
-        query = "UPDATE User set data = ? where user_id =? and id = ?"
+        query = "UPDATE block set data = ? where user_id = ? and id = ?"
     }else if typed == 3 { // top_id
-        query = "UPDATE User set top_id = ? where user_id =? and id = ?"
+        query = "UPDATE block set top_id = ? where user_id = ? and id = ?"
     }else if typed == 4 { // final_date
-        query = "UPDATE User set final_date = ? where user_id =? and id = ?"
+        query = "UPDATE block set final_date = ? where user_id = ? and id = ?"
     }
     _,err := db.Exec(query,data,user_id,block_id)
     if err != nil {
@@ -53,9 +54,9 @@ func (Block) Edit(user_id string, block_id string,typed int,data string) int {
 	return 1	
 }
 
-func (Block) Delete(id string) int {
+func (Block) Delete(user_id string,block_id string) int {
 	db := db.DB()
-	_, err := db.Exec("delete from block where id = ?",id)
+	_, err := db.Exec("delete from block where user_id = ? and id = ?",user_id, block_id)
 	defer db.Close()
     if err != nil {
 		fmt.Println(err)

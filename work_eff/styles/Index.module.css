@@ -1,0 +1,25 @@
+.main {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+.viewer {
+    border: 5px solid black;
+    border-radius: 1vh;
+}
+.item {
+    padding: 2vh;
+    font-size: 2vh;
+}
+.item:first-child {
+    font-size: 5vh;
+    margin : 0;
+}
+.button{
+    margin-top: 3vh;
+    font-size: 3vh;
+    background-color: #000000;
+    color: white;
+}
